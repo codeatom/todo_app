@@ -1,10 +1,13 @@
 package todo.app.model;
 
+import java.util.Objects;
+
 public class Person {
     private final int id;
     private String firstName;
     private String lastName;
     private String email;
+    private AppUser credentials;
 
     public Person(int id, String firstName, String lastName, String email) {
         this.id = id;
@@ -23,7 +26,7 @@ public class Person {
 
     public void setFirstName(String firstName) {
         if (isNullOrEmpty(firstName)) {
-            this.firstName = "No_first_name";
+            this.firstName = "first name missing";
         }
         else {
             this.firstName = firstName;
@@ -36,7 +39,7 @@ public class Person {
 
     public void setLastName(String lastName) {
         if (isNullOrEmpty(lastName)) {
-            this.lastName = "No_last_name";
+            this.lastName = "first name missing";
         }
         else {
             this.lastName = lastName;
@@ -49,11 +52,19 @@ public class Person {
 
     public void setEmail(String email) {
         if (isNullOrEmpty(email)) {
-            this.email = "No_email";
+            this.email = "email missing";
         }
         else {
             this.email = email;
         }
+    }
+
+    public AppUser getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(AppUser credentials) {
+        this.credentials = credentials;
     }
 
     public String getSummary() {
@@ -64,12 +75,31 @@ public class Person {
     }
 
     public boolean isNullOrEmpty(String str) {
-        if(str == null) {
-            return true;
-        }
+        if(str == null) { return true; }
 
-        String inString = str.trim();
+        return str.trim().length() == 0;
+    }
 
-        return inString.length() == 0;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return id == person.id && firstName.equals(person.firstName) && lastName.equals(person.lastName) && email.equals(person.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

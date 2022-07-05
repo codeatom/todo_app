@@ -1,5 +1,7 @@
 package todo.app.model;
 
+import java.util.Objects;
+
 public class TodoItemTask {
     private final int id;
     private boolean assigned;
@@ -52,5 +54,27 @@ public class TodoItemTask {
                 + "todoItem: " + this.todoItem +"\n"
                 + "assignee: " + this.assignee +"\n"
                 + "assigned: " + this.assigned +"\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TodoItemTask that = (TodoItemTask) o;
+        return id == that.id && assigned == that.assigned && todoItem.equals(that.todoItem);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, assigned, todoItem);
+    }
+
+    @Override
+    public String toString() {
+        return "TodoItemTask{" +
+                "id=" + id +
+                ", assigned=" + assigned +
+                ", todoItem=" + todoItem +
+                '}';
     }
 }

@@ -3,6 +3,7 @@ package todo.app.model;
 import sun.util.resources.LocaleData;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class TodoItem {
     private final int id;
@@ -88,13 +89,32 @@ public class TodoItem {
     }
 
     public boolean isNullOrEmpty(String str) {
-        if(str == null) {
-            return true;
-        }
+        if(str == null) { return true; }
 
-        String inString = str.trim();
-
-        return inString.length() == 0;
+        return str.trim().length() == 0;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TodoItem todoItem = (TodoItem) o;
+        return id == todoItem.id && done == todoItem.done && title.equals(todoItem.title) && Objects.equals(taskDescription, todoItem.taskDescription) && deadLine.equals(todoItem.deadLine);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, taskDescription, deadLine, done);
+    }
+
+    @Override
+    public String toString() {
+        return "TodoItem{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", taskDescription='" + taskDescription + '\'' +
+                ", deadLine=" + deadLine +
+                ", done=" + done +
+                '}';
+    }
 }
