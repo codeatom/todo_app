@@ -1,22 +1,16 @@
 package todo.app.model;
 
 import java.util.Objects;
-import java.util.Random;
+import todo.app.util.Validation;
 
 public class AppUser {
     private String username;
     private String password;
     AppRole role;
-    public static int intSequencer = 0;
 
     public AppUser(String username, String password) {
-        intSequencer++;
         this.setUsername(username);
         this.setPassword(password);
-    }
-
-    public static int getIntSequencer() {
-        return intSequencer;
     }
 
     public String getUsername() {
@@ -24,10 +18,10 @@ public class AppUser {
     }
 
     public void setUsername(String username) {
-        if (isNullOrEmpty(username)) {
-            this.username = ("user_" + intSequencer);
-        }
-        else {
+        int nameMinLength = 3;
+        int nameMaxLength = 10;
+
+        if (Validation.isValid("username", username, nameMinLength, nameMaxLength)) {
             this.username = username;
         }
     }
@@ -37,10 +31,10 @@ public class AppUser {
     }
 
     public void setPassword(String password) {
-        if (isNullOrEmpty(password)) {
-            this.password = ("user_" + intSequencer + new Random().nextInt(1000));
-        }
-        else {
+        int passwordMinLength = 8;
+        int passwordMaxLength = 30;
+
+        if (Validation.isValid("password", password, passwordMinLength, passwordMaxLength)) {
             this.password = password;
         }
     }
@@ -51,12 +45,6 @@ public class AppUser {
 
     public void setRole(AppRole role) {
         this.role = role;
-    }
-
-    public boolean isNullOrEmpty(String str) {
-        if(str == null) { return true; }
-
-        return str.trim().length() == 0;
     }
 
     @Override

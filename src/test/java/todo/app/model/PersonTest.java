@@ -1,6 +1,8 @@
 package todo.app.model;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonTest {
@@ -13,7 +15,8 @@ class PersonTest {
         String email = "co@provider.com";
 
         //Act
-        Person person = new Person(id, firstName, lastName, email);
+        Person person = new Person(firstName, lastName, email);
+        person.setId(id);
 
         //Assert
         assertAll(
@@ -27,25 +30,20 @@ class PersonTest {
     @Test
     void should_Not_Construct_A_Person_Object_With_Null_Or_Empty_Names_Or_Email() {
         //Arrange
-        int Id = 1;
+        int id = 1;
         String firstName = "   ";
         String lastName = null;
         String email = "";
 
-        String objectFirstName = "No_first_name";
-        String objectLastName = "No_last_name";
-        String objectEmail = "No_email";
+        String objectFirstName = null;
+        String objectLastName = "";
+        String objectEmail = "";
 
         //Act
-        Person person = new Person(Id, firstName, lastName, email);
+        Executable executable = () -> new Person(firstName, lastName, email);
 
         //Assert
-        assertAll(
-                () -> assertEquals(Id, person.getId()),
-                () -> assertEquals(objectFirstName, person.getFirstName()),
-                () -> assertEquals(objectLastName, person.getLastName()),
-                () -> assertEquals(objectEmail, person.getEmail())
-        );
+        assertThrows(IllegalArgumentException.class, executable);
     }
 
 }

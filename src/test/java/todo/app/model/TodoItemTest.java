@@ -2,6 +2,8 @@ package todo.app.model;
 
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TodoItemTest {
@@ -14,7 +16,8 @@ class TodoItemTest {
         LocalDate localDate = LocalDate.now().plusDays(7);
 
         //Act
-        TodoItem todoItem = new TodoItem(id, title, taskDescription, localDate);
+        TodoItem todoItem = new TodoItem(title, taskDescription, localDate);
+        todoItem.setId(id);
 
         //Assert
         assertAll(
@@ -29,23 +32,15 @@ class TodoItemTest {
     void should_Not_Construct_A_TodoItem_Object_With_Null_Or_Empty_Title_Or_DeadLine() {
         //Arrange
         int id = 1;
-        String title = "   ";
+        String title = "";
         String taskDescription = "Do array and string assignments";
         LocalDate localDate = null;
 
-        String objectTitle = "Title missing";
-        LocalDate objectLocalDate = LocalDate.now().plusDays(7);;
-
         //Act
-        TodoItem todoItem = new TodoItem(id, title, taskDescription, localDate);
+        Executable executable = () -> new TodoItem(title, taskDescription, localDate);
 
         //Assert
-        assertAll(
-                () -> assertEquals(id, todoItem.getId()),
-                () -> assertEquals(objectTitle, todoItem.getTitle()),
-                () -> assertEquals(taskDescription, todoItem.getTaskDescription()),
-                () -> assertEquals(objectLocalDate, todoItem.getDeadLine())
-        );
+        assertThrows(IllegalArgumentException.class, executable);
     }
 
 }

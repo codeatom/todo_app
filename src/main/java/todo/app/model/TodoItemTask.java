@@ -3,18 +3,21 @@ package todo.app.model;
 import java.util.Objects;
 
 public class TodoItemTask {
-    private final int id;
+    private int id;
     private boolean assigned;
     private TodoItem todoItem;
     private Person assignee;
 
-    public TodoItemTask(int id, TodoItem todoItem) {
-        this.id = id;
+    public TodoItemTask(TodoItem todoItem) {
         this.setTodoItem(todoItem);
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean isAssigned() {
@@ -33,12 +36,10 @@ public class TodoItemTask {
 
     public void setTodoItem(TodoItem todoItem) {
         if (todoItem == null){
-            //todoItem id to be changed to a unique id when id generator is available
-            this.todoItem = new TodoItem(1, null, null, null);
+            throw new IllegalArgumentException("Todo item is null");
         }
-        else {
-            this.todoItem = todoItem;
-        }
+
+        this.todoItem = todoItem;
     }
 
     public Person getAssignee() {

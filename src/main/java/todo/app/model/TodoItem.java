@@ -1,20 +1,18 @@
 package todo.app.model;
 
-import sun.util.resources.LocaleData;
-
 import java.time.LocalDate;
 import java.util.Objects;
+import todo.app.util.Validation;
 
 public class TodoItem {
-    private final int id;
+    private int id;
     private String title;
     private String taskDescription;
     private LocalDate deadLine;
     private boolean done;
     private Person creator;
 
-    public TodoItem(int id, String title, String taskDescription, LocalDate deadLine) {
-        this.id = id;
+    public TodoItem(String title, String taskDescription, LocalDate deadLine) {
         this.setTitle(title);
         this.taskDescription = taskDescription;
         this.setDeadLine(deadLine);
@@ -24,15 +22,19 @@ public class TodoItem {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
-        if (isNullOrEmpty(title)) {
-            this.title = "Title missing";
-        }
-        else {
+        int titleMinLength = 3;
+        int titleMaxLength = 100;
+
+        if (Validation.isValid("title", title, titleMinLength, titleMaxLength)) {
             this.title = title;
         }
     }
@@ -51,11 +53,10 @@ public class TodoItem {
 
     public void setDeadLine(LocalDate deadLine) {
         if (deadLine == null) {
-            this.deadLine = LocalDate.now().plusDays(7);
+            throw new IllegalArgumentException("Deadline is null");
         }
-        else {
-            this.deadLine = deadLine;
-        }
+
+        this.deadLine = deadLine;
     }
 
     public boolean isDone() {
@@ -86,12 +87,6 @@ public class TodoItem {
                 + "taskDescription: " + this.taskDescription +"\n"
                 + "deadline: " + this.deadLine +"\n"
                 + "done: " + this.done +"\n";
-    }
-
-    public boolean isNullOrEmpty(String str) {
-        if(str == null) { return true; }
-
-        return str.trim().length() == 0;
     }
 
     @Override

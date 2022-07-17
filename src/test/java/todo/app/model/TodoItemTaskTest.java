@@ -2,6 +2,8 @@ package todo.app.model;
 
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TodoItemTaskTest {
@@ -10,10 +12,12 @@ class TodoItemTaskTest {
         //Arrange
         int id = 1;
         LocalDate todoDeadline = LocalDate.now();
-        TodoItem todoItem = new TodoItem(1, "add test to assignment", "add test to array and string assignment", todoDeadline);
+        TodoItem todoItem = new TodoItem("add test to assignment", "add test to array and string assignment", todoDeadline);
+        todoItem.setId(id);
 
         //Act
-        TodoItemTask todoItemTask = new TodoItemTask(1, todoItem);
+        TodoItemTask todoItemTask = new TodoItemTask(todoItem);
+        todoItemTask.setId(id);
 
         //Assert
         assertAll(
@@ -27,20 +31,13 @@ class TodoItemTaskTest {
         //Arrange
         int id = 1;
         LocalDate todoDeadline = LocalDate.now();
-
-        TodoItem expectedTodoItem = new TodoItem(1, null, null, null);
+        TodoItem todoItem = null;
 
         //Act
-        TodoItemTask todoItemTask = new TodoItemTask(1, null);
+        Executable executable = () -> new TodoItemTask(todoItem);
 
         //Assert
-        assertAll(
-                () -> assertEquals(id, todoItemTask.getId()),
-                () -> assertEquals(expectedTodoItem.getId(), todoItemTask.getTodoItem().getId()),
-                () -> assertEquals(expectedTodoItem.getTitle(), todoItemTask.getTodoItem().getTitle()),
-                () -> assertEquals(expectedTodoItem.getTaskDescription(), todoItemTask.getTodoItem().getTaskDescription()),
-                () -> assertEquals(expectedTodoItem.getDeadLine(), todoItemTask.getTodoItem().getDeadLine())
-        );
+        assertThrows(IllegalArgumentException.class, executable);
     }
 
 }

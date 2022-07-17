@@ -1,16 +1,16 @@
 package todo.app.model;
 
+import todo.app.util.Validation;
 import java.util.Objects;
 
 public class Person {
-    private final int id;
+    private int id;
     private String firstName;
     private String lastName;
     private String email;
     private AppUser credentials;
 
-    public Person(int id, String firstName, String lastName, String email) {
-        this.id = id;
+    public Person(String firstName, String lastName, String email) {
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setEmail(email);
@@ -20,15 +20,19 @@ public class Person {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
 
     public void setFirstName(String firstName) {
-        if (isNullOrEmpty(firstName)) {
-            this.firstName = "first name missing";
-        }
-        else {
+        int nameMinLength = 3;
+        int nameMaxLength = 20;
+
+        if (Validation.isValid("firstName", firstName, nameMinLength, nameMaxLength)) {
             this.firstName = firstName;
         }
     }
@@ -38,10 +42,10 @@ public class Person {
     }
 
     public void setLastName(String lastName) {
-        if (isNullOrEmpty(lastName)) {
-            this.lastName = "first name missing";
-        }
-        else {
+        int nameMinLength = 3;
+        int nameMaxLength = 20;
+
+        if (Validation.isValid("lastName", lastName, nameMinLength, nameMaxLength)) {
             this.lastName = lastName;
         }
     }
@@ -51,10 +55,7 @@ public class Person {
     }
 
     public void setEmail(String email) {
-        if (isNullOrEmpty(email)) {
-            this.email = "email missing";
-        }
-        else {
+        if (Validation.isValid("email", email, 3, 15)) {
             this.email = email;
         }
     }
@@ -72,12 +73,6 @@ public class Person {
                 + "First Name: " + this.firstName +"\n"
                 + "Last Name: " + this.lastName +"\n"
                 + "email: " + this.email +"\n";
-    }
-
-    public boolean isNullOrEmpty(String str) {
-        if(str == null) { return true; }
-
-        return str.trim().length() == 0;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package todo.app.model;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,13 +28,10 @@ class AppUserTest {
         String username = "user_1";
 
         //Act
-        AppUser appUser = new AppUser(null, null);
+        Executable executable = () -> new AppUser(null, null);
 
         //Assert
-        assertAll(
-                () -> assertEquals(username, appUser.getUsername()),
-                () -> assertTrue(appUser.getPassword().length() > 0)
-        );
+        assertThrows(IllegalArgumentException.class, executable);
     }
 
 }
